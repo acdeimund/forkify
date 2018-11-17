@@ -1,2 +1,2 @@
 # forkify
-A recipe web application using asynchronous JavaScript. Created following an online coarse.
+A recipe web application using asynchronous JavaScript. Created following an online course.
