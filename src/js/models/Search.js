@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export default class Search{
+class Search{
     constructor(query){
         this.query = query;
     }
@@ -17,3 +17,5 @@ export default class Search{
         }
     }
 }
+
+export { Search };

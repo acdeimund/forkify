@@ -3,7 +3,7 @@
 // const searchQuery = 'https://www.food2fork.com/api/search?key=';
 // const getQuery = 'https://www.food2fork.com/api/get?key=';
 
-import Search from './models/Search.js';
+import { Search } from './models/Search.js';
 import * as searchView from './views/searchView.js';
 import { elements } from './views/base.js';
 
@@ -31,13 +31,14 @@ async function controlSearch(){
         state.search = new Search(query);
 
         // Prepare UI for results
-        //TODO
+        searchView.clearInput();
+        searchView.clearResults();
 
         // Search for recipes with the Search object we just created in 'state'.
         await state.search.getResults();
 
         // Render results to the UI
-        console.log(state.search.recipes); //TODO
+        searchView.renderResults(state.search.recipes);
     }
 }
 
