@@ -45,19 +45,62 @@ function renderRecipe(recipe){
     elements.searchResList.insertAdjacentHTML("beforeend", markup);
 }
 
+function createButton(page, type){
+    const markup =
+`
+    <button class="btn-inline results__btn--${type}" data-goto=${type === 'prev' ? page - 1 : page + 1}>
+        <span>Page ${type === 'prev' ? page - 1 : page + 1}</span>
+        <svg class="search__icon">
+            <use href="img/icons.svg#icon-triangle-${type === 'prev' ? 'left' : 'right'}"></use>
+        </svg>
+    </button>
+`
+return markup;
+}
+
+function renderButtons(page, numResults, resPerPage){
+    const pages = Math.ceil(numResults / resPerPage);
+
+    let button;
+    if (page === 1 && pages > 1) {
+        // Only button to go to next page
+        button = createButton(page, 'next');
+    } else if (page < pages) {
+        // Both buttons
+        button = `
+            ${createButton(page, 'prev')}
+            ${createButton(page, 'next')}
+        `;
+    } else if (page === pages && pages > 1) {
+        // Only button to go to prev page
+        button = createButton(page, 'prev');
+    }
+
+    elements.searchResPages.insertAdjacentHTML('afterbegin', button);
+}
+
+
+
 /**
  * Iterates through the Array of recipes and displays them.
  * @param {Array} recipes - Expects an array of recipes to be rendered. 
  */
-function renderResults(recipes){
-    recipes.forEach(renderRecipe);
+function renderResults(recipes, page = 1, resPerPage = 10){
+    
+    const start = (page - 1) * resPerPage;
+    const end = page * resPerPage;
+
+    recipes.slice(start, end).forEach(renderRecipe);
+
+    renderButtons(page, recipes.length, resPerPage);
 }
 
 /**
- * Clears the search results list.
+ * Clears the search results list and buttons.
  */
 function clearResults(){
     elements.searchResList.innerHTML = '';
+    elements.searchResPages.innerHTML = '';
 }
 
 export { getInput, clearInput, renderResults, clearResults };

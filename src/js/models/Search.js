@@ -1,21 +1,24 @@
 import axios from 'axios';
+import{ apiStrings } from './config.js';
 
-class Search{
+/**
+ * Search class handels the data and ajax calls for the initial search.
+ */
+export default class Search{
+    
+    /**
+     * Creates a Search object for the query recieved.
+     * @param {string} query - The query recived from the searchView module.
+     */
     constructor(query){
         this.query = query;
     }
 
+    /**
+     * Submits the query. Errors will be handled by the controler.
+     */
     async getResults() {
-        const apiKey = '66d7e73566772defde7a2fc14df7e856';
-        const searchQuery = 'https://www.food2fork.com/api/search?key=';
-        try{
-            const result = await axios(searchQuery + apiKey + '&q=' + this.query );
-            this.recipes = result.data.recipes;
-            // console.log(this.result);
-        }catch (error){
-            alert(error);
-        }
+        const result = await axios(apiStrings.searchURL + apiStrings.apiKey + apiStrings.queryPrefix + this.query );
+        this.recipes = result.data.recipes;
     }
 }
-
-export { Search };
